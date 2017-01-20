@@ -1,0 +1,11 @@
+privilegeTargets:
+  Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    'ByTorsten.FormBuilder.Plugin':
+      matcher: 'method(ByTorsten\FormBuilder\Controller\FormController->.*Action())'
+
+roles:
+  'Neos.Flow:Everybody':
+    privileges:
+      -
+        privilegeTarget: 'ByTorsten.FormBuilder.Plugin'
+        permission: GRANT

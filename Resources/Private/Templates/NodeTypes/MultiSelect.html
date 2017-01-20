@@ -1,0 +1,27 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="FormGroup"/>
+
+<f:section name="Content">
+
+  <f:if condition="{options}">
+    <f:then>
+      <f:render section="MultiSelect" arguments="{_all}" />
+    </f:then>
+    <f:else>
+      <f:render partial="Warning" arguments="{message: 'Please add options in the inspector'}" />
+    </f:else>
+  </f:if>
+</f:section>
+
+<f:section name="MultiSelect">
+  <f:if condition="{placeholder}">
+    <f:then>
+      <f:form.select multiple="1" class="{class}" value="{value}" id="{id}" property="{name}" options="{options}" prependOptionLabel="{placeholder}" disabled="{f:if(condition:isInBackend, then:'disabled')}" />
+    </f:then>
+    <f:else>
+      <f:form.select multiple="1" class="{class}" value="{value}" id="{id}" property="{name}" options="{options}" disabled="{f:if(condition:isInBackend, then:'disabled')}" />
+    </f:else>
+  </f:if>
+
+</f:section>

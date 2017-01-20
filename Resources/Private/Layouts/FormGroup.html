@@ -1,0 +1,34 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+{namespace fb=ByTorsten\FormBuilder\ViewHelpers}
+
+<f:validation.results for="{objectName}.{id}" as="result">
+  <div class="form-group{f:if(condition:result.errors,then:' has-error')}">
+
+    <f:if condition="{showLabel}">
+      <label class="control-label" for="{f:if(condition: '{neos:rendering.inBackend(node: node)}', else: id)}" style="display: block">
+        {neos:contentElement.editable(property: 'label')}
+      </label>
+    </f:if>
+
+    <fb:adjustViewHelperVariableContainer objectName="{objectName}">
+      <f:render section="Content" />
+    </fb:adjustViewHelperVariableContainer>
+
+    <f:if condition="{result.errors}">
+      <div class="help-block">
+        <f:if condition="{result.errors -> f:count()} > 1">
+          <f:then>
+            <ul>
+              <f:for each="{result.errors}" as="error">
+                <li>{error.message}</li>
+              </f:for>
+            </ul>
+          </f:then>
+          <f:else>
+            {result.errors.0.message}
+          </f:else>
+        </f:if>
+      </div>
+    </f:if>
+  </div>
+</f:validation.results>

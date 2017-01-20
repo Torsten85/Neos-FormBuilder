@@ -1,0 +1,17 @@
+<f:layout name="FormGroup"/>
+
+<f:section name="Content">
+  <f:if condition="{configured}">
+    <f:then>
+      <f:render section="Recaptcha" arguments="{_all}" />
+    </f:then>
+    <f:else>
+      <f:render partial="Warning" arguments="{message: 'Both siteKey and secretKey needs to be set for reCAPTCHA', title: 'Missing configuration'}" />
+    </f:else>
+  </f:if>
+</f:section>
+
+<f:section name="Recaptcha">
+  <div class="g-recaptcha" data-sitekey="{sitekey}" data-theme="{theme}"></div>
+  <f:form.hidden property="{name}" />
+</f:section>

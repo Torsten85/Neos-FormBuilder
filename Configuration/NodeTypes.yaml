@@ -1,0 +1,346 @@
+'Neos.Neos:ContentCollection':
+  constraints:
+    nodeTypes:
+      'ByTorsten.FormBuilder:Element': FALSE
+
+'ByTorsten.FormBuilder:Plugin':
+  superTypes:
+    'Neos.Neos:Plugin': true
+  ui:
+    label: 'Form Builder'
+    group: 'plugins'
+    icon: 'icon-envelope-alt'
+    inlineEditable: true
+    inspector:
+      groups:
+        layout:
+          label: layout
+        dispatch:
+          label: Dispatch
+        mail:
+          label: Mail content
+  properties:
+    recipient:
+      type: string
+      ui:
+        label: Recipient
+        reloadIfChanged: true
+        inspector:
+          group: dispatch
+          editorOptions:
+            placeholder: 'name@mail.com'
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+        'Neos.Neos/Validation/EmailAddressValidator': []
+    subject:
+      type: string
+      ui:
+        label: Subject
+        reloadIfChanged: true
+        inspector:
+          group: dispatch
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+    thanks:
+      type: reference
+      ui:
+        label: 'Thank you page'
+        reloadIfChanged: true
+        inspector:
+          group: dispatch
+          editorOptions:
+            nodeTypes: ['Neos.Neos:Document']
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+
+    mailheader:
+      type: string
+      defaultValue: |
+        Hello, someone filled out the form on your site:
+
+      ui:
+        inspector:
+          group: mail
+          editor: Content/Inspector/Editors/CodeEditor
+          editorOptions:
+            buttonLabel: 'Edit mail header'
+            highlightingMode: 'text/plain'
+
+    mailcontent:
+      type: string
+      defaultValue: |
+        {label}
+        ---
+        {value}
+      ui:
+        inspector:
+          group: mail
+          editor: Content/Inspector/Editors/CodeEditor
+          editorOptions:
+            buttonLabel: 'Edit mail content'
+            highlightingMode: 'text/plain'
+
+    mailfooter:
+      type: string
+      defaultValue: |
+        sincerely yours
+        Neos
+      ui:
+        inspector:
+          group: mail
+          editor: Content/Inspector/Editors/CodeEditor
+          editorOptions:
+            buttonLabel: 'Edit mail footer'
+            highlightingMode: 'text/plain'
+
+  childNodes:
+    elements:
+      type: 'Neos.Neos:ContentCollection'
+      constraints:
+        nodeTypes:
+          'ByTorsten.FormBuilder:Element': true
+          '*': false
+
+'ByTorsten.FormBuilder:Element':
+  abstract: true
+  superTypes:
+    'Neos.Neos:Content': true
+
+'ByTorsten.FormBuilder:FormElement':
+  abstract: true
+  superTypes:
+    'ByTorsten.FormBuilder:Element': true
+  form:
+    targetType: 'string'
+  ui:
+    icon: 'icon-edit-sign'
+    group: formfields
+    inspector:
+      groups:
+        options:
+          label: Form Options
+  properties:
+    internalLabel:
+      type: string
+      ui:
+        label: Internal label
+        help:
+          message: 'Used as label for mail body'
+        inspector:
+          group: 'options'
+
+'ByTorsten.FormBuilder:LabelMixin':
+  abstract: true
+  properties:
+    label:
+      type: string
+      ui:
+        label: Label
+        inlineEditable: TRUE
+        aloha:
+          placeholder: Your label
+          format: []
+          table: []
+          link: []
+          list: []
+          alignment: []
+          formatlesspaste:
+            button: false
+            formatlessPasteOption: true
+          autoparagraph: fals
+
+'ByTorsten.FormBuilder:RequiredMixin':
+  abstract: true
+  properties:
+    required:
+      type: boolean
+      ui:
+        label: Required
+        reloadIfChanged: TRUE
+        inspector:
+          group: options
+
+
+'ByTorsten.FormBuilder:PlaceholderMixin':
+  abstract: true
+  properties:
+    placeholder:
+      type: string
+      ui:
+        label: Placeholder
+        reloadIfChanged: true
+        inspector:
+          group: options
+
+'ByTorsten.FormBuilder:Submit':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+  label: ${'Submit (' + q(node).property('title') + ')'}
+  ui:
+    label: Submit
+    inlineEditable: true
+  properties:
+    title:
+      type: string
+      defaultValue: 'Submit'
+      ui:
+        label: Title
+        reloadIfChanged: true
+        inspector:
+          group: options
+
+'ByTorsten.FormBuilder:Text':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:PlaceholderMixin': true
+  label: ${'Textfield (' + q(node).property('label') + ')'}
+  ui:
+    label: Textfield
+
+'ByTorsten.FormBuilder:Number':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:PlaceholderMixin': true
+  label: ${'Numberfield (' + q(node).property('label') + ')'}
+  ui:
+    label: Numberfield
+  form:
+    targetType: 'float'
+
+'ByTorsten.FormBuilder:Email':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:PlaceholderMixin': true
+  label: ${'Email address (' + q(node).property('label') + ')'}
+  ui:
+    label: Email address
+  form:
+    validator: 'ByTorsten\FormBuilder\Validation\Validator\EmailValidator'
+
+'ByTorsten.FormBuilder:Textarea':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:PlaceholderMixin': true
+  label: ${'Textarea (' + q(node).property('label') + ')'}
+  ui:
+    label: Textarea
+
+'ByTorsten.FormBuilder:Checkbox':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+  label: ${'Checkbox (' + q(node).property('label') + ')'}
+  ui:
+    label: Checkbox
+
+#'ByTorsten.FormBuilder:Select':
+#  superTypes:
+#    'ByTorsten.FormBuilder:FormElement': true
+#    'ByTorsten.FormBuilder:LabelMixin': true
+#    'ByTorsten.FormBuilder:RequiredMixin': true
+#    'ByTorsten.FormBuilder:PlaceholderMixin': true
+#  label: ${'Select (' + q(node).property('label') + ')'}
+#  ui:
+#    label: Select
+#  properties:
+#    options:
+#      type: array
+#      ui:
+#        label: 'Options'
+#        reloadIfChanged: TRUE
+#        inspector:
+#          group: options
+#          editor: 'ByTorsten.Editors/TagEditor'
+#          editorOptions:
+#            icon: 'icon-tag'
+#            placeholder: 'Option name'
+#      validation:
+#        'ByTorsten.Editors/CountValidator':
+#          minimum: 1
+#  form:
+#    value: ${q(node).property('options')[value]}
+#
+#'ByTorsten.FormBuilder:MultiSelect':
+#  superTypes:
+#    'ByTorsten.FormBuilder:Select': TRUE
+#  label: ${'MultiSelect (' + q(node).property('label') + ')'}
+#  ui:
+#    label: Multiple Select
+#  form:
+#    targetType: array<string>
+#    processor: ByTorsten\FormBuilder\Processor\MultiSelectProcessor
+#    value: ~
+
+'ByTorsten.FormBuilder:Recaptcha':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+  ui:
+    label: reCAPTCHA
+    inlineEditable: false
+  properties:
+    theme:
+      type: string
+      ui:
+        label: 'Theme'
+        reloadIfChanged: TRUE
+        inspector:
+          group: options
+          editor:  Content/Inspector/Editors/SelectBoxEditor
+          editorOptions:
+            values:
+              light:
+                label: Light
+              dark:
+                label: Dark
+    sitekey:
+      type: string
+      ui:
+        label: 'Site key'
+        reloadIfChanged: TRUE
+        inspector:
+          group: options
+    secretkey:
+      type: string
+      ui:
+        label: 'Secret key'
+        reloadIfChanged: TRUE
+        inspector:
+          group: options
+  form:
+    validator: 'ByTorsten\FormBuilder\Validation\Validator\RecaptchaValidator'
+    value: "${false}"
+
+'ByTorsten.FormBuilder:Upload':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+  label: ${'Upload (' + q(node).property('label') + ')'}
+  form:
+    targetType: Neos\Flow\ResourceManagement\PersistentResource
+    processor: ByTorsten\FormBuilder\Processor\UploadProcessor
+  ui:
+    label: Upload
+    inlineEditable: false
+
+'ByTorsten.FormBuilder:Uploads':
+  superTypes:
+    'ByTorsten.FormBuilder:FormElement': true
+    'ByTorsten.FormBuilder:LabelMixin': true
+    'ByTorsten.FormBuilder:RequiredMixin': true
+  label: ${'Uploads (' + q(node).property('label') + ')'}
+  form:
+    targetType: array<Neos\Flow\ResourceManagement\PersistentResource>
+    processor: ByTorsten\FormBuilder\Processor\UploadProcessor
+  ui:
+    label: Uploads
+    inlineEditable: false

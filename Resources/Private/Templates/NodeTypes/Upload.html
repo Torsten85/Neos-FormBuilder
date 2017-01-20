@@ -1,0 +1,18 @@
+{namespace fb=ByTorsten\FormBuilder\ViewHelpers}
+
+<f:layout name="FormGroup"/>
+
+<f:section name="Content">
+  <f:form.upload property="{name}" class="{class}" id="{id}" disabled="{f:if(condition:isInBackend, then:'disabled')}" />
+
+  <fb:form.lastSubmittedFormData as="upload" property="{name}" targetType="Neos\Flow\ResourceManagement\PersistentResource">
+    <f:if condition="{upload}">
+      <div class="help-block">
+        {upload.filename}
+        <fb:link.formAction class="btn btn-link" action="clearUpload" arguments="{property: name}">
+          &times;
+        </fb:link.formAction>
+      </div>
+    </f:if>
+  </fb:form.lastSubmittedFormData>
+</f:section>

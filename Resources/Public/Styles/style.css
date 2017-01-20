@@ -1,0 +1,11 @@
+div.neos-formbuilder-alert {
+  padding: 10px;
+}
+div.neos-formbuilder-alert.neos-formbuilder-warning {
+  color: white;
+  background-color: #ff460d;
+}
+div.neos-formbuilder-alert .neos-formbuilder-alert-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}

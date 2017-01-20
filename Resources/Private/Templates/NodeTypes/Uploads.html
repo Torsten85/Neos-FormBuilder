@@ -1,0 +1,24 @@
+{namespace fb=ByTorsten\FormBuilder\ViewHelpers}
+
+<f:layout name="FormGroup"/>
+
+<f:section name="Content">
+  <fb:form.multipleUpload property="{name}" multiple="multiple" class="{class}" id="{id}" disabled="{f:if(condition:isInBackend, then:'disabled')}" />
+
+  <fb:form.lastSubmittedFormData as="uploads" property="{name}" targetType="array<Neos\Flow\ResourceManagement\PersistentResource>">
+    <f:if condition="{uploads}">
+      <div class="help-block">
+        <ul>
+          <f:for each="{uploads}" as="upload" iteration="iterator">
+            <li>
+              {upload.filename}
+              <fb:link.formAction class="btn btn-link" action="clearUpload" arguments="{property: name, index: iterator.index}">
+                &times;
+              </fb:link.formAction>
+              </li>
+          </f:for>
+        </ul>
+      </div>
+    </f:if>
+  </fb:form.lastSubmittedFormData>
+</f:section>

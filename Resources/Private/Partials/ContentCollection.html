@@ -1,0 +1,15 @@
+{namespace fusion=Neos\Fusion\ViewHelpers}
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:if condition="{neos:rendering.inBackend(node: node)}">
+  <f:then>
+    {collection -> f:format.raw()}
+  </f:then>
+  <f:else>
+    <f:for each="{collectionArray}" as="elementNode">
+      <f:validation.results for="data.{elementNode.identifier}">
+        <fusion:render path="formElementRenderer" typoScriptPackageKey="ByTorsten.FormBuilder" context="{node: elementNode, errors: validationResults.errors}" />
+      </f:validation.results>
+    </f:for>
+  </f:else>
+</f:if>

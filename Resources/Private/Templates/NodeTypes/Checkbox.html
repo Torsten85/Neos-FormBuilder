@@ -1,0 +1,11 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="FormGroup"/>
+
+<f:section name="Content">
+
+  <label class="control-label" for="{f:if(condition: '{neos:rendering.inBackend(node: node)}', else: id)}">
+    <f:form.checkbox property="{name}" value="1" class="{class}" id="{id}" disabled="{f:if(condition:isInBackend, then:'disabled')}" />
+    {neos:contentElement.editable(property: 'label')}
+  </label>
+</f:section>

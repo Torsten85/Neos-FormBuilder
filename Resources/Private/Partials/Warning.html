@@ -1,0 +1,12 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:if condition="{neos:rendering.inBackend(node: node)}">
+  <div class="neos-formbuilder-alert neos-formbuilder-warning">
+
+    <f:if condition="{title}">
+      <div class="neos-formbuilder-alert-header">{title}</div>
+    </f:if>
+
+    {message}
+  </div>
+</f:if>

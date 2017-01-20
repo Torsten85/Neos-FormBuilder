@@ -1,0 +1,24 @@
+{
+    "description": "Neos form builder",
+    "type": "neos-package",
+    "repositories": [
+        {"type": "git", "url": "https://github.com/Torsten85/Neos-PluginBase"}
+    ],
+    "require": {
+        "neos/nodetypes": "*",
+        "bytorsten/neospluginbase": "dev-master",
+        "neos/swiftmailer": "6.0.x-dev",
+        "google/recaptcha": "^1.1"
+    },
+    "name": "bytorsten/formbuilder",
+    "autoload": {
+        "psr-0": {
+            "ByTorsten\\FormBuilder": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "ByTorsten.FormBuilder"
+        }
+    }
+}

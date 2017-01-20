@@ -1,0 +1,18 @@
+Neos:
+  Neos:
+    fusion:
+      autoInclude:
+        'ByTorsten.FormBuilder': TRUE
+    nodeTypes:
+      groups:
+        formfields:
+          position: 'after general'
+          label: 'Form fields'
+          collapsed: false
+ByTorsten:
+  FormBuilder:
+    mail:
+      sender: "noreply@domain.com"
+    recaptcha:
+      siteKey: ""
+      secretKey: ""

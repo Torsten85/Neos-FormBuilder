@@ -1,0 +1,117 @@
+prototype(Neos.Neos:Page).head.formbuilderBackendStyle = Neos.Fusion:Tag {
+  tagName = 'link'
+
+  attributes {
+    rel = 'stylesheet'
+    type = 'text/css'
+
+    href = Neos.Fusion:ResourceUri {
+      path = 'resource://ByTorsten.FormBuilder/Public/Styles/style.css'
+    }
+  }
+
+  @if.inBackend = ${documentNode.context.inBackend}
+}
+
+prototype(Neos.Neos:Page).head.recaptcha = Neos.Fusion:Array {
+  setupScript = Neos.Fusion:Tag {
+    tagName = 'script'
+    content = Neos.Fusion:Template {
+      templatePath = 'resource://ByTorsten.FormBuilder/Private/JavaScript/recaptcha.build.js'
+    }
+  }
+
+  library = Neos.Fusion:Tag {
+    tagName = 'script'
+    attributes {
+      src = 'https://www.google.com/recaptcha/api.js?onload=repatchaReady&render=explicit'
+      async = true
+      defer = true
+    }
+
+  }
+  @if.onlyRenderWhenRepatchaIsPresentOrInBackend = ${q(documentNode).find('[instanceof ByTorsten.FormBuilder:Recaptcha]').count() > 0 || documentNode.context.inBackend}
+}
+
+prototype(ByTorsten.FormBuilder:Plugin) < prototype(ByTorsten.NeosPluginBase:Plugin) {
+  package = 'ByTorsten.FormBuilder'
+  controller = 'Form'
+  action = 'index'
+
+  isConfigured = ${q(node).property('recipient') && q(node).property('subject') && q(node).property('thanks')}
+  recipient = ${q(node).property('recipient')}
+  subject = ${q(node).property('subject')}
+  thanks = ${q(node).property('thanks')}
+  mailheader = ${q(node).property('mailheader')}
+  mailcontent = ${q(node).property('mailcontent')}
+  mailfooter = ${q(node).property('mailfooter')}
+
+  elements = Neos.Neos:ContentCollection {
+    nodePath = 'elements'
+  }
+}
+
+prototype(ByTorsten.FormBuilder:BasicElement) < prototype(Neos.Neos:Content) {
+  templatePath = ${'resource://ByTorsten.FormBuilder/Private/Templates/NodeTypes/' + String.replace(node.nodeType, 'ByTorsten.FormBuilder:', '') + '.html'}
+  layoutRootPath = 'resource://ByTorsten.FormBuilder/Private/Layouts'
+  partialRootPath = 'resource://ByTorsten.FormBuilder/Private/Partials'
+
+  id = ${node.identifier}
+  name = ${node.identifier}
+  placeholder = ${q(node).property('placeholder')}
+  label = ${q(node).property('label')}
+  showLabel = true
+  objectName = ${objectName}
+  isInBackend = ${documentNode.context.inBackend}
+  controllerContext = ${controllerContext}
+  class = 'form-control'
+}
+
+prototype(ByTorsten.FormBuilder:Text) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  templatePath = 'resource://ByTorsten.FormBuilder/Private/Templates/NodeTypes/Input.html'
+  type = 'text'
+}
+
+prototype(ByTorsten.FormBuilder:Number) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  templatePath = 'resource://ByTorsten.FormBuilder/Private/Templates/NodeTypes/Input.html'
+  type = 'number'
+}
+
+prototype(ByTorsten.FormBuilder:Email) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  templatePath = 'resource://ByTorsten.FormBuilder/Private/Templates/NodeTypes/Input.html'
+  type = 'email'
+}
+
+prototype(ByTorsten.FormBuilder:Textarea) < prototype(ByTorsten.FormBuilder:BasicElement)
+prototype(ByTorsten.FormBuilder:Upload) < prototype(ByTorsten.FormBuilder:BasicElement)
+prototype(ByTorsten.FormBuilder:Uploads) < prototype(ByTorsten.FormBuilder:BasicElement)
+
+prototype(ByTorsten.FormBuilder:Checkbox) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  showLabel = false
+}
+
+prototype(ByTorsten.FormBuilder:Select) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  options = ${q(node).property('options')}
+}
+
+prototype(ByTorsten.FormBuilder:MultiSelect) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  options = ${q(node).property('options')}
+}
+
+prototype(ByTorsten.FormBuilder:Recaptcha) < prototype(ByTorsten.FormBuilder:BasicElement) {
+  sitekey = ${q(node).property('sitekey') || Configuration.setting('ByTorsten.FormBuilder.recaptcha.siteKey')}
+  secretkey = ${q(node).property('secretkey') || Configuration.setting('ByTorsten.FormBuilder.recaptcha.secretKey')}
+  configured = ${this.sitekey && this.secretkey}
+  theme = ${q(node).property('theme')}
+  showLabel = false
+}
+
+prototype(ByTorsten.FormBuilder:Submit) < prototype(Neos.Neos:Content) {
+  templatePath = ${'resource://ByTorsten.FormBuilder/Private/Templates/NodeTypes/' + String.replace(node.nodeType, 'ByTorsten.FormBuilder:', '') + '.html'}
+  layoutRootPath = 'resource://ByTorsten.FormBuilder/Private/Layouts'
+  partialRootPath = 'resource://ByTorsten.FormBuilder/Private/Partials'
+
+  isInBackend = ${documentNode.context.inBackend}
+  title = ${q(node).property('title')}
+  class = 'form-control'
+}
