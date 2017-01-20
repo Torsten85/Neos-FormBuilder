@@ -1,4 +1,5 @@
 {
+    "name": "bytorsten/formbuilder",
     "description": "Neos form builder",
     "type": "neos-package",
     "repositories": [
@@ -10,15 +11,9 @@
         "neos/swiftmailer": "6.0.x-dev",
         "google/recaptcha": "^1.1"
     },
-    "name": "bytorsten/formbuilder",
     "autoload": {
-        "psr-0": {
-            "ByTorsten\\FormBuilder": "Classes/"
-        }
-    },
-    "extra": {
-        "neos": {
-            "package-key": "ByTorsten.FormBuilder"
+        "psr-4": {
+            "ByTorsten\\FormBuilder\\": "Classes"
         }
     }
 }
