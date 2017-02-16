@@ -8,7 +8,7 @@
     "require": {
         "neos/nodetypes": "*",
         "bytorsten/neospluginbase": "dev-master",
-        "neos/swiftmailer": "6.0.x-dev",
+        "neos/swiftmailer": "6.0.0",
         "google/recaptcha": "^1.1"
     },
     "autoload": {
