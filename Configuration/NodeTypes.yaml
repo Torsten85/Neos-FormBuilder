@@ -175,7 +175,7 @@
 'ByTorsten.FormBuilder:Submit':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-  label: ${'Submit (' + q(node).property('title') + ')'}
+  label: ${'Submit (' + String.crop(q(node).property('title'), 15, '…') + ')'}
   ui:
     label: Submit
     inlineEditable: true
@@ -195,7 +195,7 @@
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Textfield (' + q(node).property('label') + ')'}
+  label: ${'Textfield (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   ui:
     label: Textfield
 
@@ -205,7 +205,7 @@
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Numberfield (' + q(node).property('label') + ')'}
+  label: ${'Numberfield (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   ui:
     label: Numberfield
   form:
@@ -217,7 +217,7 @@
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Email address (' + q(node).property('label') + ')'}
+  label: ${'Email address (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   ui:
     label: Email address
   form:
@@ -229,7 +229,7 @@
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Textarea (' + q(node).property('label') + ')'}
+  label: ${'Textarea (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   ui:
     label: Textarea
 
@@ -238,7 +238,7 @@
     'ByTorsten.FormBuilder:FormElement': true
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Checkbox (' + q(node).property('label') + ')'}
+  label: ${'Checkbox (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   ui:
     label: Checkbox
 
@@ -272,7 +272,7 @@
 #'ByTorsten.FormBuilder:MultiSelect':
 #  superTypes:
 #    'ByTorsten.FormBuilder:Select': TRUE
-#  label: ${'MultiSelect (' + q(node).property('label') + ')'}
+#  label: ${'MultiSelect (' + String.crop(q(node).property('label'), 15, '…') + ')'}
 #  ui:
 #    label: Multiple Select
 #  form:
@@ -324,7 +324,7 @@
     'ByTorsten.FormBuilder:FormElement': true
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Upload (' + q(node).property('label') + ')'}
+  label: ${'Upload (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   form:
     targetType: Neos\Flow\ResourceManagement\PersistentResource
     processor: ByTorsten\FormBuilder\Processor\UploadProcessor
@@ -337,7 +337,7 @@
     'ByTorsten.FormBuilder:FormElement': true
     'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Uploads (' + q(node).property('label') + ')'}
+  label: ${'Uploads (' + String.crop(q(node).property('label'), 15, '…') + ')'}
   form:
     targetType: array<Neos\Flow\ResourceManagement\PersistentResource>
     processor: ByTorsten\FormBuilder\Processor\UploadProcessor
