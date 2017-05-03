@@ -1,12 +1,13 @@
 {namespace neos=Neos\Neos\ViewHelpers}
 
-<f:if condition="{neos:rendering.inBackend(node: node)}">
+<f:for each="{result.flattenedErrors}" as="errors" key="finisher">
   <div class="neos-formbuilder-alert neos-formbuilder-warning">
+      <div class="neos-formbuilder-alert-header">{finisher -> f:format.case(mode: 'capital')}</div>
 
-    <f:if condition="{title}">
-      <div class="neos-formbuilder-alert-header">{title}</div>
-    </f:if>
-
-    {message}
+      <ul>
+          <f:for each="{errors}" as="error">
+              <li>{error}</li>
+          </f:for>
+      </ul>
   </div>
-</f:if>
+</f:for>

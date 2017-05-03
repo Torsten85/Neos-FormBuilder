@@ -1,0 +1,61 @@
+'ByTorsten.FormBuilder:Plugin':
+  ui:
+    inspector:
+      groups:
+        mailer:
+          label: 'Mailer'
+          tab: 'finishers'
+          collapsed: true
+  properties:
+    mailerEnabled:
+      type: boolean
+      ui:
+        reloadIfChanged: true
+        label: Active
+        inspector:
+          group: mailer
+      options:
+        finisher: 'mailer.enabled'
+    mailerRecipient:
+      type: string
+      ui:
+        reloadIfChanged: true
+        label: Recipient
+        inspector:
+          group: mailer
+          editorOptions:
+            placeholder: 'name@mail.com'
+      options:
+        finisher: 'mailer.recipient'
+    mailerSubject:
+      type: string
+      ui:
+        label: Subject
+        reloadIfChanged: true
+        inspector:
+          group: mailer
+      options:
+        finisher: 'mailer.subject'
+    mailerTemplate:
+      type: string
+      defaultValue: |
+        Hello, someone filled out the form on your site:
+
+        <f:for each="{data}" as="value" key="label">
+        {label}
+        ---
+        {value}
+        </f:for>
+
+        sincerely yours
+        Neos
+      ui:
+        reloadIfChanged: true
+        inspector:
+          group: mailer
+          editor: Content/Inspector/Editors/CodeEditor
+          editorOptions:
+            buttonLabel: 'Edit mail content'
+            highlightingMode: 'text/plain'
+      options:
+        finisher: 'mailer.template'

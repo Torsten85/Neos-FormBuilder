@@ -1,0 +1,38 @@
+type: dictionary
+additionalProperties:
+  # every property here is a Node Type
+  type: dictionary
+  properties:
+    'properties':
+      type: dictionary
+
+      # for each property...
+      additionalProperties:
+        type:
+          -
+            type: 'null'
+          -
+            type: dictionary
+            properties:
+              'options':
+                type: dictionary
+                properties:
+                  'finisher':
+                    type:
+                      -
+                        type: { type: string, description: "Property path for finisher variable setter" }
+                      -
+                        type: array
+                        items: { type: string, description: "Property path for finisher variable setter" }
+
+    'options':
+      type: dictionary
+      properties:
+        'form':
+          type: dictionary
+          additionalProperties: FALSE
+          properties:
+            'value': { type: string, descripton: "Eel expression to extract the value" }
+            'targetType': {type: string, description: "Hint for the property mapper" }
+            'processor': { type: string, format: class-name, description: "Post processor for the value" }
+            'validator': { type: string, format: class-name, description: "Validator for the value" }

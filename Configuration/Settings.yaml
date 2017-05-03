@@ -11,8 +11,14 @@ Neos:
           collapsed: false
 ByTorsten:
   FormBuilder:
-    mail:
-      sender: "noreply@domain.com"
+    finishers:
+      mailer:
+        class: 'ByTorsten\FormBuilder\Finisher\MailerFinisher'
+        options:
+          from: "noreply@domain.com"
+      redirect:
+        position: 'end'
+        class: 'ByTorsten\FormBuilder\Finisher\RedirectFinisher'
     recaptcha:
       siteKey: ""
       secretKey: ""

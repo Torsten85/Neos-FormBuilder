@@ -12,6 +12,10 @@
     icon: 'icon-envelope-alt'
     inlineEditable: true
     inspector:
+      tabs:
+        finishers:
+          label: Finishers
+          icon: icon-level-down
       groups:
         layout:
           label: layout
@@ -19,80 +23,6 @@
           label: Dispatch
         mail:
           label: Mail content
-  properties:
-    recipient:
-      type: string
-      ui:
-        label: Recipient
-        reloadIfChanged: true
-        inspector:
-          group: dispatch
-          editorOptions:
-            placeholder: 'name@mail.com'
-      validation:
-        'Neos.Neos/Validation/NotEmptyValidator': []
-        'Neos.Neos/Validation/EmailAddressValidator': []
-    subject:
-      type: string
-      ui:
-        label: Subject
-        reloadIfChanged: true
-        inspector:
-          group: dispatch
-      validation:
-        'Neos.Neos/Validation/NotEmptyValidator': []
-    thanks:
-      type: reference
-      ui:
-        label: 'Thank you page'
-        reloadIfChanged: true
-        inspector:
-          group: dispatch
-          editorOptions:
-            nodeTypes: ['Neos.Neos:Document']
-      validation:
-        'Neos.Neos/Validation/NotEmptyValidator': []
-
-    mailheader:
-      type: string
-      defaultValue: |
-        Hello, someone filled out the form on your site:
-
-      ui:
-        inspector:
-          group: mail
-          editor: Content/Inspector/Editors/CodeEditor
-          editorOptions:
-            buttonLabel: 'Edit mail header'
-            highlightingMode: 'text/plain'
-
-    mailcontent:
-      type: string
-      defaultValue: |
-        {label}
-        ---
-        {value}
-      ui:
-        inspector:
-          group: mail
-          editor: Content/Inspector/Editors/CodeEditor
-          editorOptions:
-            buttonLabel: 'Edit mail content'
-            highlightingMode: 'text/plain'
-
-    mailfooter:
-      type: string
-      defaultValue: |
-        sincerely yours
-        Neos
-      ui:
-        inspector:
-          group: mail
-          editor: Content/Inspector/Editors/CodeEditor
-          editorOptions:
-            buttonLabel: 'Edit mail footer'
-            highlightingMode: 'text/plain'
-
   childNodes:
     elements:
       type: 'Neos.Neos:ContentCollection'
@@ -110,8 +40,9 @@
   abstract: true
   superTypes:
     'ByTorsten.FormBuilder:Element': true
-  form:
-    targetType: 'string'
+  options:
+    form:
+      targetType: 'string'
   ui:
     icon: 'icon-edit-sign'
     group: formfields
@@ -119,15 +50,6 @@
       groups:
         options:
           label: Form Options
-  properties:
-    internalLabel:
-      type: string
-      ui:
-        label: Internal label
-        help:
-          message: 'Used as label for mail body'
-        inspector:
-          group: 'options'
 
 'ByTorsten.FormBuilder:LabelMixin':
   abstract: true
@@ -147,7 +69,15 @@
           formatlesspaste:
             button: false
             formatlessPasteOption: true
-          autoparagraph: fals
+          autoparagraph: false
+    internalLabel:
+      type: string
+      ui:
+        label: Internal label
+        help:
+          message: 'Used as label for finishers'
+        inspector:
+          group: 'options'
 
 'ByTorsten.FormBuilder:RequiredMixin':
   abstract: true
@@ -175,7 +105,7 @@
 'ByTorsten.FormBuilder:Submit':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-  label: ${'Submit (' + String.crop(q(node).property('title'), 15, '…') + ')'}
+  label: ${'Submit (' + String.crop(String.stripTags(q(node).property('title')), 15, '…') + ')'}
   ui:
     label: Submit
     inlineEditable: true
@@ -192,63 +122,65 @@
 'ByTorsten.FormBuilder:Text':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Textfield (' + String.crop(q(node).property('label'), 15, '…') + ')'}
+  label: ${'Textfield (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
   ui:
     label: Textfield
 
 'ByTorsten.FormBuilder:Number':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Numberfield (' + String.crop(q(node).property('label'), 15, '…') + ')'}
+  label: ${'Numberfield (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
   ui:
     label: Numberfield
-  form:
-    targetType: 'float'
+  options:
+    form:
+      targetType: 'float'
 
 'ByTorsten.FormBuilder:Email':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Email address (' + String.crop(q(node).property('label'), 15, '…') + ')'}
+  label: ${'Email(' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
   ui:
     label: Email address
-  form:
-    validator: 'ByTorsten\FormBuilder\Validation\Validator\EmailValidator'
+  options:
+    form:
+      validator: 'ByTorsten\FormBuilder\Validation\Validator\EmailValidator'
 
 'ByTorsten.FormBuilder:Textarea':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
+    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:PlaceholderMixin': true
-  label: ${'Textarea (' + String.crop(q(node).property('label'), 15, '…') + ')'}
+  label: ${'Textarea (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
   ui:
     label: Textarea
 
 'ByTorsten.FormBuilder:Checkbox':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Checkbox (' + String.crop(q(node).property('label'), 15, '…') + ')'}
+    'ByTorsten.FormBuilder:LabelMixin': true
+  label: ${'Checkbox (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
   ui:
     label: Checkbox
 
 #'ByTorsten.FormBuilder:Select':
 #  superTypes:
 #    'ByTorsten.FormBuilder:FormElement': true
-#    'ByTorsten.FormBuilder:LabelMixin': true
 #    'ByTorsten.FormBuilder:RequiredMixin': true
+#    'ByTorsten.FormBuilder:LabelMixin': true
 #    'ByTorsten.FormBuilder:PlaceholderMixin': true
-#  label: ${'Select (' + q(node).property('label') + ')'}
+#  label: ${'Select (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
 #  ui:
 #    label: Select
 #  properties:
@@ -266,8 +198,9 @@
 #      validation:
 #        'ByTorsten.Editors/CountValidator':
 #          minimum: 1
-#  form:
-#    value: ${q(node).property('options')[value]}
+#  options:
+#    form:
+#     value: ${q(node).property('options')[value]}
 #
 #'ByTorsten.FormBuilder:MultiSelect':
 #  superTypes:
@@ -275,10 +208,11 @@
 #  label: ${'MultiSelect (' + String.crop(q(node).property('label'), 15, '…') + ')'}
 #  ui:
 #    label: Multiple Select
-#  form:
-#    targetType: array<string>
-#    processor: ByTorsten\FormBuilder\Processor\MultiSelectProcessor
-#    value: ~
+#  options:
+#    form:
+#     targetType: array<string>
+#     processor: ByTorsten\FormBuilder\Processor\MultiSelectProcessor
+#     value: ~
 
 'ByTorsten.FormBuilder:Recaptcha':
   superTypes:
@@ -315,19 +249,21 @@
         reloadIfChanged: TRUE
         inspector:
           group: options
-  form:
-    validator: 'ByTorsten\FormBuilder\Validation\Validator\RecaptchaValidator'
-    value: "${false}"
+  options:
+    form:
+      validator: 'ByTorsten\FormBuilder\Validation\Validator\RecaptchaValidator'
+      value: "${false}"
 
 'ByTorsten.FormBuilder:Upload':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Upload (' + String.crop(q(node).property('label'), 15, '…') + ')'}
-  form:
-    targetType: Neos\Flow\ResourceManagement\PersistentResource
-    processor: ByTorsten\FormBuilder\Processor\UploadProcessor
+    'ByTorsten.FormBuilder:LabelMixin': true
+  label: ${'Upload (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
+  options:
+    form:
+      targetType: Neos\Flow\ResourceManagement\PersistentResource
+      processor: ByTorsten\FormBuilder\Processor\UploadProcessor
   ui:
     label: Upload
     inlineEditable: false
@@ -335,12 +271,13 @@
 'ByTorsten.FormBuilder:Uploads':
   superTypes:
     'ByTorsten.FormBuilder:FormElement': true
-    'ByTorsten.FormBuilder:LabelMixin': true
     'ByTorsten.FormBuilder:RequiredMixin': true
-  label: ${'Uploads (' + String.crop(q(node).property('label'), 15, '…') + ')'}
-  form:
-    targetType: array<Neos\Flow\ResourceManagement\PersistentResource>
-    processor: ByTorsten\FormBuilder\Processor\UploadProcessor
+    'ByTorsten.FormBuilder:LabelMixin': true
+  label: ${'Uploads (' + String.crop(String.stripTags(q(node).property('label')), 15, '…') + ')'}
+  options:
+    form:
+      targetType: array<Neos\Flow\ResourceManagement\PersistentResource>
+      processor: ByTorsten\FormBuilder\Processor\UploadProcessor
   ui:
     label: Uploads
     inlineEditable: false

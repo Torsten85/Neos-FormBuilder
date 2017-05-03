@@ -1,18 +1,16 @@
 <?php
 namespace ByTorsten\FormBuilder\Processor;
 
-use Neos\SwiftMailer\Message;
-use Neos\ContentRepository\Domain\Model\Node;
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 
-class MultiSelectProcessor extends AbstractProcessor {
+class MultiSelectProcessor implements ProcessorInterface {
 
     /**
      * @param mixed $value
-     * @param Message $message
-     * @param Node $node
-     * @return void
+     * @param NodeInterface $node
+     * @return string
      */
-    public function process(&$value, Message $message, Node $node) {
+    public function process($value, NodeInterface $node) : string {
         $options = $node->getProperty('options');
 
         $labels = [];
@@ -20,6 +18,6 @@ class MultiSelectProcessor extends AbstractProcessor {
             $labels[] = $options[(integer) $val];
         }
 
-        $value = implode("\n", $labels);
+        return implode("\n", $labels);
     }
 }

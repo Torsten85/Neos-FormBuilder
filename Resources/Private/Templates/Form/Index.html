@@ -2,13 +2,10 @@
 {namespace fb=ByTorsten\FormBuilder\ViewHelpers}
 {namespace npb=ByTorsten\NeosPluginBase\ViewHelpers}
 
-<f:if condition="{isConfigured}">
-  <f:then>
-    <f:form action="submit" method="post" objectName="data" section="{node.identifier}" id="{node.identifier}" enctype="multipart/form-data" additionalAttributes="{novalidate: 'novalidate'}">
-      <npb:renderFusionInCurrentControllerContext path="elements" context="{objectName: 'data'}"/>
-    </f:form>
-  </f:then>
-  <f:else>
-    <f:render partial="Warning" arguments="{node: node, message: 'The form builder is missing some configurations', title: 'Missing configuration'}" />
-  </f:else>
+<f:form action="submit" method="post" objectName="data" section="{node.identifier}" id="{node.identifier}" enctype="multipart/form-data" additionalAttributes="{novalidate: 'novalidate'}">
+  <npb:renderFusionInCurrentControllerContext path="elements" context="{objectName: 'data'}"/>
+</f:form>
+
+<f:if condition="{configurationErrors}">
+  <f:render partial="Warning" arguments="{result: configurationErrors}" />
 </f:if>

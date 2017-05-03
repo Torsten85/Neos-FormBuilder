@@ -2,7 +2,7 @@
 namespace ByTorsten\FormBuilder\Controller;
 
 use ByTorsten\FormBuilder\Property\TypeConverter\FormDataConverter;
-use ByTorsten\FormBuilder\Service\MailComposer;
+use ByTorsten\FormBuilder\Service\FinisherService;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\ResourceManagement\PersistentResource;
 use Neos\Flow\ResourceManagement\ResourceManager;
@@ -26,13 +26,23 @@ class FormController extends AbstractFormController
     protected $resourceManager;
 
     /**
+     * @Flow\Inject
+     * @var FinisherService
+     */
+    protected $finisherService;
+
+    /**
      * @return void
      */
     public function indexAction()
     {
         $this->view->assign('node', $this->node);
-        $this->view->assign('isConfigured', $this->tsValue('isConfigured'));
         $this->view->assign('submitButtonLabel', $this->tsValue('submitButtonLabel'));
+
+        if ($this->node->getContext()->isInBackend()) {
+            $configurationErrors = $this->finisherService->getConfigurationErrors($this->node, $this->controllerContext);
+            $this->view->assign('configurationErrors', $configurationErrors);
+        }
     }
 
     /**
@@ -40,6 +50,7 @@ class FormController extends AbstractFormController
      * @param int $index
      */
     public function clearUploadAction($property, $index = null) {
+        /** @var array $data */
         $data = $this->request->getArgument('data');
 
         if (isset($data[$property]) && ($index === null || isset($data[$property][$index]))) {
@@ -92,15 +103,7 @@ class FormController extends AbstractFormController
      */
     public function submitAction($data)
     {
-        $mailComposer = new MailComposer();
-        $mailComposer->setNode($this->node);
-        $mailComposer->setRecipient($this->tsValue('recipient'));
-        $mailComposer->setSubject($this->tsValue('subject'));
-        $mailComposer->setMailParts($this->tsValue('mailheader'), $this->tsValue('mailcontent'), $this->tsValue('mailfooter'));
-        $mailComposer->setData($data);
-        $mailComposer->dispatch();
-
-        $this->redirectToNode($this->tsValue('thanks'));
+        $this->finisherService->finish($this->node, $this->controllerContext, $data);
     }
 
     /**

@@ -38,14 +38,6 @@ prototype(ByTorsten.FormBuilder:Plugin) < prototype(ByTorsten.NeosPluginBase:Plu
   controller = 'Form'
   action = 'index'
 
-  isConfigured = ${q(node).property('recipient') && q(node).property('subject') && q(node).property('thanks')}
-  recipient = ${q(node).property('recipient')}
-  subject = ${q(node).property('subject')}
-  thanks = ${q(node).property('thanks')}
-  mailheader = ${q(node).property('mailheader')}
-  mailcontent = ${q(node).property('mailcontent')}
-  mailfooter = ${q(node).property('mailfooter')}
-
   elements = Neos.Neos:ContentCollection {
     nodePath = 'elements'
   }

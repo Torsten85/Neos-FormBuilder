@@ -1,0 +1,29 @@
+'ByTorsten.FormBuilder:Plugin':
+  ui:
+    inspector:
+      groups:
+        redirect:
+          label: 'Redirect'
+          tab: 'finishers'
+          collapsed: true
+  properties:
+    redirectEnabled:
+        type: boolean
+        ui:
+          reloadIfChanged: true
+          label: Active
+          inspector:
+            group: redirect
+        options:
+          finisher: 'redirect.enabled'
+    redirectTarget:
+        type: reference
+        ui:
+          reloadIfChanged: true
+          label: 'Redirect page'
+          inspector:
+            group: redirect
+            editorOptions:
+              nodeTypes: ['Neos.Neos:Document']
+        options:
+          finisher: ['x', 'redirect.target']
