@@ -14,4 +14,4 @@ Included form types area:
 - ReCAPTCHA
 - Submit Button
 
-All form types are neos NodeTypes and can be easily changes via `NodeTypes.yaml` and TypoScript.
+All form types are neos NodeTypes and can be easily changes via `NodeTypes.yaml` and Fusion.
